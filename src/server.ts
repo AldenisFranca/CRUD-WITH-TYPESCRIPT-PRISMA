@@ -10,6 +10,8 @@ app.use(cors());
 
 app.use('/api', router);
 
-app.listen(3001, () => {
-  console.log('Server is listening on port 3000');
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });

@@ -1,8 +1,8 @@
 import prisma from '../prisma/prismaCliente';
-import { Aluno, Curso, Endereco } from '../interfaces/alunoInterfaces'
+import { Aluno, AlunoCompleto, Curso, Endereco } from '../interfaces/alunoInterfaces'
 
 export class AlunoService {
-  public async create(aluno: Aluno, endereco: Endereco, curso: Curso) {
+  public async createAluno(aluno: Aluno, endereco: Endereco, curso: Curso) {
     const cursoCreated = await prisma.curso.create({ data: curso });
     if (!cursoCreated) throw new Error('Curso não criado');
 
@@ -17,9 +17,8 @@ export class AlunoService {
     return alunoCreated;
   }
 
-
   public async findById(id: number) {
-    const aluno = await prisma.aluno.findUnique({ where: { id } });
+    const aluno = await prisma.aluno.findUnique({ where: { id }, include: { endereco: true, Curso: true } });
     return aluno;
   }
 
@@ -38,24 +37,24 @@ export class AlunoService {
     return alunos;
   }
 
-  public async update(id: number, aluno: Aluno, endereco: Endereco, curso: Curso) {
+  public async updateAluno(currentAluno: any, aluno: any, endereco: Endereco, curso: Curso) {
 
     const cursoUpdated = await prisma.curso.update({
-      where: { id: curso.id },
+      where: { id: currentAluno.Curso.id },
       data: curso
     });
 
     if (!cursoUpdated) throw new Error('Curso não atualizado');
 
     const enderecoUpdated = await prisma.endereco.update({
-      where: { id: endereco.id },
+      where: { id: currentAluno.endereco.id },
       data: endereco
     });
 
     if (!enderecoUpdated) throw new Error('Endereço não atualizado');
 
     const alunoUpdated = await prisma.aluno.update({
-      where: { id },
+      where: { id: Number(currentAluno.id) },
       data: aluno
     });
     if (!alunoUpdated) throw new Error('Aluno não atualizado');
@@ -63,7 +62,7 @@ export class AlunoService {
     return alunoUpdated;
   }
 
-  public async delete(id: number) {
+  public async deleteAluno(id: number) {
     const aluno = await prisma.aluno.delete({ where: { id } });
     return aluno;
   }

@@ -53,7 +53,7 @@ export type TQualificacao = {
 export type TSolicitacao = {
   data: Date
   status: string
-  horarioAgendado: Date
+  horarioAgendado: string
   assunto: string
   alunoId: number
   professorId: number | null

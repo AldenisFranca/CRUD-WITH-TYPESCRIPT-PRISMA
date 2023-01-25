@@ -84,7 +84,7 @@ model Solicitacao {
   id              Int        @id @default(autoincrement())
   data            DateTime   @default(now())
   status          String     @default("Pendente")
-  horarioAgendado DateTime
+  horarioAgendado String
   assunto         String
   Aluno           Aluno      @relation(fields: [alunoId], references: [id])
   alunoId         Int

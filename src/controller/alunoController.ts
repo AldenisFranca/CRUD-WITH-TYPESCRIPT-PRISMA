@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import moment from 'moment';
-import { Aluno, Curso, Endereco } from '../interfaces/alunoInterfaces';
+import { Aluno, Curso, TEndereco } from '../interfaces/alunoInterfaces';
 import prisma from '../prisma/prismaCliente';
 import { AlunoService } from '../services/alunoService';
 
@@ -19,7 +19,7 @@ export class AlunoController extends AlunoService {
     if (cpfExists) return res.status(400).json({ message: 'CPF já cadastrado' });
 
     const curso: Curso = { descricao, instituicao, periodo };
-    const endereco: Endereco = { bairro, cep, cidade, complemento, estado, logradouro, numero };
+    const endereco: TEndereco = { bairro, cep, cidade, complemento, estado, logradouro, numero };
     const aluno: Aluno = { celular, cpf, dataNascimento, email, nome, sexo, telefone };
 
     const alunoCreated = await super.createAluno(aluno, endereco, curso);
@@ -52,7 +52,7 @@ export class AlunoController extends AlunoService {
     if (!alunoExists) return res.status(404).json({ message: 'Aluno não encontrado' });
 
     const curso: Curso = { descricao, instituicao, periodo };
-    const endereco: Endereco = { bairro, cep, cidade, complemento, estado, logradouro, numero };
+    const endereco: TEndereco = { bairro, cep, cidade, complemento, estado, logradouro, numero };
     const aluno = { celular, cpf, dataNascimento: moment(dataNascimento).format('YYYY-MM-DDTHH:mm:ssZ'), email, nome, sexo, telefone };
 
     const alunoUpdated = super.updateAluno( alunoExists, aluno, endereco, curso);
